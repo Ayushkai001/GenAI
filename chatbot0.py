@@ -2,16 +2,18 @@ from dotenv import load_dotenv
 import time
 load_dotenv()
 
-from langchain_mistralai import ChatMistralAI
-from langchain.messages import HumanMessage , SystemMessage, AIMessage
+from langchain_mistralai import ChatMistralAI #type: ignore 
+from langchain.messages import HumanMessage , SystemMessage, AIMessage #type: ignore
 
 print("______Welcome to Ayush K. Chatbot type bye to exit the programme ______")
 
 try :
    emotion = input("Select the emotion of the chatbot (1-Happy, 2-Sad, 3-Angry, 4-Excited): ")
-except ValueError:
-   print("Invalid input. Please enter a number between 1 and 4.")
+except Exception as e:
+   print(f"Invalid input. Error: {e}")
    exit()
+finally :
+    mode = "..."
 
 if emotion == "1":
     mode = """
@@ -48,10 +50,12 @@ while True:
     prompt = input("Enter your command: ")
     if prompt.lower() == "bye" : 
         print("Bot : Goodbye !!")
-        exit()
+        break
     messages.append(HumanMessage(content=prompt))
     response = model.invoke(messages)
     messages.append(AIMessage(content = response.content))
     print("Bot:", response.content)
 
-print(messages)
+print("\n Conversation History :")
+for message in messages:
+    print(message)
