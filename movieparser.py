@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 load_dotenv()
 from langchain_core.prompts import ChatPromptTemplate # type: ignore
-from langchain_mistralai import ChatMistralAI # type: ignore
+# from langchain_mistralai import ChatMistralAI # type: ignore
 from langchain_core.output_parsers import PydanticOutputParser # type: ignore
 from pydantic import BaseModel
 from typing import List, Optional
+from langchain_cohere import ChatCohere # type: ignore
+
 
 #Creating a Schema for the movie data using Pydantic's BaseModel
 class Movie(BaseModel):
@@ -18,7 +20,10 @@ class Movie(BaseModel):
 
 parser = PydanticOutputParser(pydantic_object=Movie) #Making an instance of the PydanticOutputParser class and passing the Movie schema to it.
 
-model = ChatMistralAI(model = "mistral-small-latest") 
+# model = ChatMistralAI(model = "mistral-small-latest") 
+model = ChatCohere(
+    model="command-a-03-2025"
+)
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are an expert movie data extraction assistant.
@@ -43,4 +48,4 @@ print ('\nExtracted Movie Data : \n' , movie_data)
 
 
 #To Test the code, you can use the following paragraph as input:
- #Widely regarded as one of Christopher Nolan's finest works, Interstellar was released in 2014 and blends Science Fiction, Adventure, and Drama into an emotional story about humanity's survival. The film follows former NASA pilot Cooper, played by Matthew McConaughey, who joins a mission through a mysterious wormhole alongside Anne Hathaway and a talented cast including Jessica Chastain, Michael Caine, and Matt Damon. Praised for its scientific accuracy, breathtaking visuals, and Hans Zimmer's unforgettable score, the movie has earned an IMDb rating of 8.7 and continues to be celebrated as one of the greatest science fiction films ever made.
+#Widely regarded as one of Christopher Nolan's finest works, Interstellar was released in 2014 and blends Science Fiction, Adventure, and Drama into an emotional story about humanity's survival. The film follows former NASA pilot Cooper, played by Matthew McConaughey, who joins a mission through a mysterious wormhole alongside Anne Hathaway and a talented cast including Jessica Chastain, Michael Caine, and Matt Damon. Praised for its scientific accuracy, breathtaking visuals, and Hans Zimmer's unforgettable score, the movie has earned an IMDb rating of 8.7 and continues to be celebrated as one of the greatest science fiction films ever made.
